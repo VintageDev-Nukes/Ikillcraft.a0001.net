@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Inserta tu juego aquí</title>
+<script>
+/*function contar(input) {
+//Comprobamos que no pase de 3000 caracteres y si pasa, que borre los sobrantes
+if (input.value.length >= 500) {
+input.value = input.value.substring(0,500);
+}
+//alamacenamos el resto
+var resto = 500 - input.value.length;
+ 
+//imprimimos los caracteres restantes en el span
+var final=document.getElementById('letras');
+final.innerHTML=resto+" caracteres";
+ 
+}*/
+var Color = function(red, green, blue) 
+{
+  this.r = red;
+  this.g = green;
+  this.b = blue;
+  Color.lerpColor = function(f, t, p) 
+  {
+    return new Color(Math.lerp(f.r, t.r, p), 
+                     Math.lerp(f.g, t.g, p), 
+                     Math.lerp(f.b, t.b, p));
+  };
+  Math.lerp = function(min, max, p) 
+  {
+    return min + (max - min) * p;
+  };
+  this.string = function() 
+  {
+    return "rgb("+Math.round(this.r)+", "+Math.round(this.g)+", "+Math.round(this.b)+")";
+  };
+}
+var red = new Color(255, 0, 0)
+    gray = new Color(204, 204, 204),
+    maxchars = 5000, 
+    scountunder = 500;
+function charcount(input) 
+{
+  if(input.maxLength == -1)
+    input.maxLength = maxchars;
+
+  var r = maxchars - input.value.length,
+      f = document.getElementById('charcount').children[0];
+
+  if(r < scountunder) f.style.color = Color.lerpColor(red, gray, r/scountunder).string(); 
+  f.innerHTML = r+' caracteres';
+}
+</script>
+<style type="text/css">
+<!--
+body,td,th {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 14px;
+}
+#charcount {position: relative;}
+#charcount > label {
+position: absolute;
+right: 0px;
+font-weight: bold;
+color: #ccc;
+}
+.form {
+position: relative;
+margin: 1em 0;
+width: 490px;
+}
+#descripcion {
+width: 490px;
+height: 60px;
+border: 2px solid #ccc;
+padding: 3px;
+color: #555;
+font: 16px Arial, Helvetica, sans-serif;
+}
+-->
+</style></head>
+
+<body>
+<form id="form1" name="form1" method="post" action="envia.php">
+  <b>Nombre del juego:</b>
+    <input type="text" name="nombre" id="nombre" />
+    <br>
+    <label id="charcount">
+      Descripción:
+      <label>5000 caracteres</label>
+      <br>
+      <textarea onkeydown="charcount(this);" name="descripcion" id="descripcion"></textarea>
+    </label>
+<div class="form">
+
+        </div>
+  <b>Link del juego:</b>
+    <input type="text" name="linkjuego" id="linkjuego" /><br>
+  <b>Miniatura:</b>
+    <input type="text" name="miniatura" id="miniatura" /><br>
+<input type="submit" name="button" id="button" value="Enviar">
+</form>
+</body>
+</html>

@@ -1,0 +1,71 @@
+CREATE TABLE `grupos` (
+  `id` bigint(7) NOT NULL auto_increment,
+  `grupo` varchar(100) NOT NULL default '',
+  `genero` varchar(100) NOT NULL default '',
+  `representante` varchar(100) NOT NULL default '',
+  `email` varchar(100) NOT NULL default '',
+  `url` varchar(100) NOT NULL default '',
+  `facebook` varchar(100) NOT NULL default '',
+  `twitter` varchar(100) NOT NULL default '',
+  `influencia` varchar(100) NOT NULL default '',
+  `historia` longtext NOT NULL,
+  `integrantes` longtext NOT NULL,
+  `video1` longtext NOT NULL,
+  `video2` longtext NOT NULL,
+  `soundcloud1` longtext NOT NULL,
+  `soundcloud2` longtext NOT NULL,
+  `imagen` LONGBLOB NOT NULL,
+  `mostrar` varchar(100) NOT NULL default '',
+  `hits` tinyint(3) NOT NULL default '0',
+  KEY `id` (`id`)
+) 
+
+CREATE TABLE `juegos` (
+  `id` bigint(7) NOT NULL auto_increment,
+  `miniatura` varchar(500) NOT NULL default '',
+  `linkjuego` varchar(500) NOT NULL default '',
+  `nombre` varchar(50) NOT NULL default '',
+  `descripcion` varchar(500) NOT NULL default '',
+  `categoria` varchar(50) NOT NULL default '',
+  KEY `id` (`id`)
+) 
+
+ALTER TABLE juegos ADD COLUMN cat2 varchar(50) NOT NULL default '';
+
+<?php
+$miniatura = $_REQUEST['miniatura'] ;
+$linkjuego = $_REQUEST['linkjuego'] ;
+$nombre = $_REQUEST['nombre'] ;
+$descripcion = $_REQUEST['descripcion'] ;
+
+$confirmacion = "Estos son los datos que has introducido. Muchas gracias por tu participación:<br /><br />Nombre: $grupo <br />Genero: $genero";
+require_once(dirname(__FILE__) . '/Settings.php');
+mysql_connect ($db_server, $db_user, $db_passwd) or die ('Error: ' . mysql_error());
+mysql_select_db ($db_name);
+$query="INSERT INTO grupos (miniatura, linkjuego, nombre, descripcion) VALUES ('$miniatura', '$linkjuego', '$nombre', '$descripcion')";
+mysql_query($query) or die ('Error en la carga de datos');
+header("location:http://mundobajo.net/okay.php")
+?>
+
+<APPLET CODE="nombre_applet.class" WIDTH="ancho" HEIGHT="alto">
+		</APPLET>
+
+<object type="text/html" data="page.htm">contenido alternativo</object>
+
+<object type="application/x-shockwave-flash" data="archivoflash.swf" width="550" height="400">
+    <param name="movie" value="archivoflash.swf" />
+    <param name="quality" value="high" />
+    <img src="noflash.png" width="550" height="400" alt="Imagen en sustitución de flash" />
+</object>
+
+$key = $_REQUEST['tecla'];
+$key2 = echo '<div class="tecla">'; echo $key; echo '</div>';
+
+function key($cadena) {
+$find2 = array($key);
+$repl2 = array($key2);
+$cadena = str_replace ($find2, $repl2, $cadena);
+return $cadena;
+} 
+
+

